@@ -28,6 +28,9 @@ public class AuthService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
+	@Autowired
+    private JwtService jwtService; 
+	
 	public UserResponseDTO login(String loginEmail, String loginPassword) {
 		
 		Optional<User> optUser = userRepository.findByEmail(loginEmail);
@@ -37,14 +40,20 @@ public class AuthService {
 		}
 		
 		User user = optUser.get();
-		System.out.println(user);
 		// Vérifit si la pwd enregistrée dans le database correspond à celle passé dans le formulaire de login
 	    if (!passwordEncoder.matches(loginPassword, user.getPassword())) {
 	        throw new InvalidCredentialsException();
-	    }  
-	    /* Convertit l'objet User retrouveé dans notre base de données grace à l'Email reçue par le LoginRequestDTO au niveau du AuthRestController 
-	     * et donc retire la password afin de respecter la structure du UserResponseDTO. */
-	    return userConverter.convertUserToUserResponseDTO(user);
+	    } 
+	    
+	    /* Convertit l'objet "User user" retrouvé dans notre base de données grace à l'Email reçue par le LoginRequestDTO au niveau du AuthRestController 
+	     * et donc retire la password afin de respecter la structure du UserResponseDTO.*/
+	    UserResponseDTO userResponse = userConverter.convertUserToUserResponseDTO(user);
+	    
+	    // Génère un token JWt pour le user authentifié
+	    String token = jwtService.generateToken(userResponse);
+	    userResponse.setToken(token); // Ajoute le token alla response
+	   
+	    return userResponse;
 	}
 	
 	
@@ -64,8 +73,15 @@ public class AuthService {
 
         // Salva il nuovo utente nel repository
         User savedUser = userRepository.save(newUser);
+       
+        // Convertit l'objet "User newUser" en UserResponseDTO pour la reponse qui ira au front-end evidemment sans la password.
+        UserResponseDTO userResponse = userConverter.convertUserToUserResponseDTO(savedUser);
         
-        // Convertit l'objet User en UserResponseDTO pour la reponse qui ira au front-end evidemment dans la password.
-        return userConverter.convertUserToUserResponseDTO(savedUser);  
+        //	Génère un token JWt pour le user authentifié
+	    String token = jwtService.generateToken(userResponse);
+	    
+	    userResponse.setToken(token); // Ajoute le token alla response
+	   
+	    return userResponse;
     }
 }

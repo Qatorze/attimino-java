@@ -23,6 +23,7 @@ public class UserConverter {
             user.getRole(),
             maskedEmail,
             user.getImagePath()
+            
         );
     }
 

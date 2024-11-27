@@ -10,6 +10,7 @@ public class UserResponseDTO {
     private String role;
     private String email;
     private String imagePath;
+    private String token; // Pour inclure le token dans la response
     
     public UserResponseDTO() {
 		super();
@@ -71,5 +72,13 @@ public class UserResponseDTO {
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
+	
+	public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
       
 }
