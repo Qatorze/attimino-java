@@ -23,33 +23,48 @@ import java.util.Map;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Fichier responsable de la gestion des processus d'authentification 
+ * (connexion ou enregistrement) et de la génération des tokens JWT.
+ */
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService; // Iniezione del servizio per la gestione del JWT
-    private final AuthService authService; // Service per gestire il login e la registrazione
-    
+	private final AuthenticationManager authenticationManager; // Gestionnaire d'authentification.
+    private final JwtService jwtService; // Service pour gérer les tokens JWT.
+    private final AuthService authService; // Service pour gérer l'enregistrement et la connexion.
+
+    /**
+     * Constructeur pour injecter les dépendances nécessaires.
+     */
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtService jwtService, AuthService authService) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.authService = authService;
-        setFilterProcessesUrl("/login"); // Specifica l'endpoint di login
+        setFilterProcessesUrl("/login"); // Spécifie l'URL de l'endpoint de connexion.
     }
     
+    /**
+     * Tente une authentification selon le type de requête (login ou register).
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
-        // Verifica se la richiesta è di login o registrazione
+    	 // Vérifie si l'utilisateur essaie de s'enregistrer.
         if (request.getRequestURI().contains("/register")) {
             return handleRegister(request, response);
         }
         return handleLogin(request, response);
     }
     
+    /**
+     * Gestion des tentatives de connexion.
+     */
     private Authentication handleLogin(HttpServletRequest request, HttpServletResponse response) {
         try {
+        	// Récupère les informations de connexion de la requête.
             String email = request.getParameter("email");
             String password = request.getParameter("password");
 
+            // Crée un objet UsernamePasswordAuthenticationToken et tente l'authentification.
             return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(email, password)
             );
@@ -58,41 +73,53 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
     }
 
+    /**
+     * Gestion des tentatives d'enregistrement.
+     */
     private Authentication handleRegister(HttpServletRequest request, HttpServletResponse response) {
-        try {     
+        try {    
+        	// Récupère les données d'enregistrement de la requête.
             String surname = request.getParameter("surname");
             String name = request.getParameter("name");
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             
+            // Crée un DTO pour l'enregistrement et appelle le service d'authentification.
             RegisterRequestDTO registerRequest = new RegisterRequestDTO(surname, name, email, password);
-            // Invoca il servizio di registrazione
-            authService.register(registerRequest); // Registrazione dell'utente
+            authService.register(registerRequest); // Enregistre l'utilisateur.
 
-            return null; // Non serve autenticare dopo la registrazione, perché restituiremo il token direttamente
+            // Pas besoin d'authentifier après l'enregistrement.
+            return null;
         } catch (Exception e) {
             throw new RuntimeException("Registration failed");
         }
     }
     
+    /**
+     * Réponse pour les authentifications échouées.
+     */
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed)
             throws IOException, ServletException {
-    	// Risposta in caso di fallimento dell'autenticazione
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // errore 401
+    	// Reponse en cas d'erreur lors de l'authentification
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Code 401
         response.setContentType("application/json");
+        // Message d'erreur en JSON.
         response.getWriter().write("{\"error\": \"Invalid email or password\"}");
     }
 
+    /**
+     * Réponse pour les authentifications réussies.
+     */
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult)
             throws IOException, ServletException {
-        // Ottieni i dettagli dell'utente autenticato
+    	// Récupère les détails de l'utilisateur authentifié.
         UserResponseDTO user = (UserResponseDTO) authResult.getPrincipal();
 
-        // Genera il token JWT usando JwtService
+        // Génère le token JWT.
         String token = jwtService.generateToken(user);
 
-        // Prepara la risposta JSON
+        // Prépare une réponse JSON avec le token.
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
@@ -100,6 +127,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Map<String, String> responseBody = new HashMap<>();
         responseBody.put("token", token);
 
+        // Retourne la réponse.
         new ObjectMapper().writeValue(response.getOutputStream(), responseBody);
     }
 }

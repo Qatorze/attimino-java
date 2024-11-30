@@ -3,27 +3,31 @@ package com.qatorze.attimino.dtos;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-// Objet utilisé pour ne recevoir que certaines données de la part du client lors de l'update car on ne veut pas donnéer la possibilité d'update n'import quel champ.
+/**
+ * DTO pour la mise à jour d'utilisateur. 
+ * Contient uniquement les champs que l'utilisateur peut modifier.
+ */
 public class UserRequestDTO {
 
-    private Long id; // ID dell'utente
+    private Long id; // Identifiant de l'utilisateur.
 
-    @NotBlank(message = "Il cognome non può essere vuoto")
-    @Size(max = 20, message = "Il cognome non può essere più lungo di 20 caratteri")
+    @NotBlank(message = "Le nom ne peut pas etre vide")
+    @Size(max = 20, message = "Le nom doit etre long de 20 caractères max")
     private String surname;
 
-    @NotBlank(message = "Il nome non può essere vuoto")
-    @Size(max = 20, message = "Il nome non può essere più lungo di 20 caratteri")
+    @NotBlank(message = "Le prenom ne peut pas etre vide")
+    @Size(max = 20, message = "Le prenom doit etre long de 20 caractères max")
     private String name;
 
-    @NotBlank(message = "La password non può essere vuota")
-    @Size(min = 8, message = "La password deve avere almeno 8 caratteri")
+    @NotBlank(message = "La password ne peut pas etre vide")
+    @Size(min = 8, message = "La password doit contenir au moins 8 caractères")
     private String password;
 
-    private String imagePath; // Percorso dell'immagine
+    private String imagePath; // Chemin de l'image de profil.
 
-    public UserRequestDTO() {}
+    public UserRequestDTO() {} // Constructeur par défaut.
 
+    // Constructeur avec paramètres.
     public UserRequestDTO(Long id, String surname, String name, String password, String imagePath) {
         this.id = id;
         this.surname = surname;
@@ -32,6 +36,7 @@ public class UserRequestDTO {
         this.imagePath = imagePath;
     }
 
+    // Getters et setters.
     public Long getId() {
         return id;
     }
@@ -71,5 +76,4 @@ public class UserRequestDTO {
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
-    
 }

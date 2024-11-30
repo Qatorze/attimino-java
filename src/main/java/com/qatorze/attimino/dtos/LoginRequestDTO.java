@@ -4,28 +4,30 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-//Objet utilisé pour ne recevoir que certaines données de la part du client lors du login
+/**
+ * DTO utilisé pour la requête de connexion. 
+ * Contient uniquement les champs nécessaires pour authentifier l'utilisateur.
+ */
 public class LoginRequestDTO {
 
-	@NotBlank(message = "L'email non può essere vuota")
-	@Email(message = "L'email deve essere valida")
-	@Size(max = 30, message = "L'email non può essere più lunga di 30 caratteri")
+	@NotBlank(message = "L'email ne peut pas etre vide") // Vérifie que le champ n'est pas vide.
+    @Email(message = "L'email doit etre valide") // Vérifie que l'email est bien formatée.
+    @Size(max = 30, message = "L'email doit etre long de 30 caractères max") // Limite la longueur de l'email.
     private String email;
 
-	@NotBlank(message = "La password non può essere vuota")
-    @Size(min = 8, message = "La password deve avere almeno 6 caratteri")
+    @NotBlank(message = "La password ne peut etre vide") // Vérifie que le champ n'est pas vide.
+    @Size(min = 8, message = "La password doit avoir au moins 8 caractères") // Vérifie la longueur minimale de la password.
     private String password;
 
-    public LoginRequestDTO() {}
+    public LoginRequestDTO() {} // Constructeur par défaut.
 
-	public LoginRequestDTO(
-			@NotBlank(message = "L'email non può essere vuota") @Email(message = "L'email deve essere valida") @Size(max = 30, message = "L'email non può essere più lunga di 30 caratteri") String email,
-			@NotBlank(message = "La password non può essere vuota") @Size(min = 8, message = "La password deve avere almeno 6 caratteri") String password) {
-		super();
+    // Constructeur avec paramètres.
+	public LoginRequestDTO( String email, String password) {
 		this.email = email;
 		this.password = password;
 	}
 
+	// Getters et setters.
 	public String getEmail() {
 		return email;
 	}

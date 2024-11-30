@@ -4,70 +4,69 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-// Objet utilisé pour ne recevoir que certaines données de la part du client lors de la registration
+/**
+ * DTO pour la requête d'enregistrement. 
+ * Contient les champs nécessaires pour créer un nouvel utilisateur.
+ */
 public class RegisterRequestDTO {
 
-	@NotBlank(message = "Il cognome non può essere vuoto")
-    @Size(max = 20, message = "Il cognome non può essere più lungo di 20 caratteri")
+    @NotBlank(message = "Le nom ne peut pas etre vide") // Vérifie que le champ n'est pas vide.
+    @Size(max = 20, message = "Le nom doit etre long de 20 caractères max") // Limite la longueur du champ.
     private String surname;
 
-    @NotBlank(message = "Il nome non può essere vuoto")
-    @Size(max = 20, message = "Il nome non può essere più lungo di 20 caratteri")
+    @NotBlank(message = "Le prenom ne peut pas etre vide")
+    @Size(max = 20, message = "Le prenom doit etre long de 20 caractères max")
     private String name;
 
-    @NotBlank(message = "L'email non può essere vuota")
-    @Email(message = "L'email deve essere valida")
-    @Size(max = 30, message = "L'email non può essere più lunga di 30 caratteri")
+    @NotBlank(message = "L'email ne peut pas etre vide")
+    @Email(message = "L'email doit etre valide")
+    @Size(max = 30, message = "L'email doit etre lond de 30 caractères max")
     private String email;
 
-    @NotBlank(message = "La password non può essere vuota")
-    @Size(min = 8, message = "La password deve avere almeno 8 caratteri")
+    @NotBlank(message = "La password ne peut pas etre vide")
+    @Size(min = 8, message = "La password doit contenir au moins 8 caractères")
     private String password;
 
-    public RegisterRequestDTO() {}
+    public RegisterRequestDTO() {} // Constructeur par défaut.
 
-	public RegisterRequestDTO(
-			@NotBlank(message = "Il cognome non può essere vuoto") @Size(max = 20, message = "Il cognome non può essere più lungo di 20 caratteri") String surname,
-			@NotBlank(message = "Il nome non può essere vuoto") @Size(max = 20, message = "Il nome non può essere più lungo di 20 caratteri") String name,
-			@NotBlank(message = "L'email non può essere vuota") @Email(message = "L'email deve essere valida") @Size(max = 30, message = "L'email non può essere più lunga di 30 caratteri") String email,
-			@NotBlank(message = "La password non può essere vuota") @Size(min = 8, message = "La password deve avere almeno 8 caratteri") String password) {
-		super();
-		this.surname = surname;
-		this.name = name;
-		this.email = email;
-		this.password = password;
-	}
+    // Constructeur avec paramètres.
+    public RegisterRequestDTO(String surname, String name, String email, String password) {
+        this.surname = surname;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 
-	public String getSurname() {
-		return surname;
-	}
+    // Getters et setters.
+    public String getSurname() {
+        return surname;
+    }
 
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

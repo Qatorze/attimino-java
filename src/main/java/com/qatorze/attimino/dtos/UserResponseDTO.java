@@ -1,22 +1,37 @@
 package com.qatorze.attimino.dtos;
 
-/* Cette classe me servira pour renvoyer que les données necessaires au client. Elle n'a pas l'attribut
- * "String password" car il s'agit d'une données sensible.*/
+/**
+ * DTO utilisé pour envoyer une réponse contenant les informations nécessaires sur un utilisateur.
+ * Cette classe exclut les données sensibles comme le mot de passe.
+ */
 public class UserResponseDTO {
-	
-    private Long id;
-    private String surname;
-    private String name;
-    private String role;
-    private String email;
-    private String imagePath;
-    private String token; // Pour inclure le token dans la response
     
-    public UserResponseDTO() {
-		super();
-	}
+    private Long id; // Identifiant unique de l'utilisateur.
+    private String surname; // Nom de famille de l'utilisateur.
+    private String name; // Prénom de l'utilisateur.
+    private String role; // Rôle de l'utilisateur (exemple : "user", "admin").
+    private String email; // Adresse e-mail de l'utilisateur.
+    private String imagePath; // Chemin ou URL de l'image de profil de l'utilisateur.
+    private String token; // Token JWT pour la session de l'utilisateur.
 
-	public UserResponseDTO(Long id, String surname, String name, String role, String email, String imagePath) {
+    /**
+     * Constructeur par défaut.
+     * Nécessaire pour les frameworks comme Spring lors de la désérialisation.
+     */
+    public UserResponseDTO() {
+        super();
+    }
+
+    /**
+     * Constructeur avec paramètres.
+     * @param id Identifiant unique de l'utilisateur.
+     * @param surname Nom de famille de l'utilisateur.
+     * @param name Prénom de l'utilisateur.
+     * @param role Rôle de l'utilisateur.
+     * @param email Adresse e-mail de l'utilisateur.
+     * @param imagePath Chemin ou URL de l'image de profil de l'utilisateur.
+     */
+    public UserResponseDTO(Long id, String surname, String name, String role, String email, String imagePath) {
         this.id = id;
         this.surname = surname;
         this.name = name;
@@ -25,60 +40,61 @@ public class UserResponseDTO {
         this.imagePath = imagePath;
     }
 
-	public Long getId() {
-		return id;
-	}
+    // Getters et setters pour chaque attribut.
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getSurname() {
-		return surname;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
+    public String getSurname() {
+        return surname;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
 
-	public void setNome(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getRole() {
-		return role;
-	}
+    public void setNome(String name) { // Nom de méthode erroné : devrait être setName.
+        this.name = name;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public String getRole() {
+        return role;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setRole(String role) {
+        this.role = role;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getImagePath() {
-		return imagePath;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
-	}
-	
-	public String getToken() {
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getToken() {
         return token;
     }
 
     public void setToken(String token) {
         this.token = token;
     }
-      
 }

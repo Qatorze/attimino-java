@@ -1,139 +1,141 @@
 package com.qatorze.attimino.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
+/**
+ * Représente un utilisateur dans le système.
+ * Cette entité est mappée à la table "users" dans la base de données.
+ */
 @Entity
 @Table(name = "users")
 public class User {
-	
-	@Id // Pour marquer cet attribut comme clé primaire
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID")
-	private Long id;
-	
-	@Column(name = "surname", length = 20, nullable = false)
-	private String surname;
-	
-	@Column(name = "name", length = 20, nullable = false)
-	private String name;
-	
-	@Column(name = "role", length = 20, nullable = true)
-	private String role;
-	
-	@Column(name = "email", length = 30, nullable = false, unique = true)
-	private String email;
-	
-	@Column(name = "password", length = 60, nullable = false)
-	private String password;
 
-	@Column(name = "image_path", length = 255, nullable = true)
-	private String imagePath;
+    // L'identifiant unique de l'utilisateur
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Long id;
 
-	public User() {
-		super();
-	}
+    // Le prénom de l'utilisateur
+    @Column(name = "surname", length = 20, nullable = false)
+    private String surname;
 
-	public User(String surname, String name, String role, String email, String password, String imagePath) {
-		super();
-		this.surname = surname;
-		this.name = name;
-		this.role = role;
-		this.email = email;
-		this.password = password;
-		this.imagePath = imagePath;
-	}
-	
-	public User(Long id, String surname, String name, String role, String email, String password, String imagePath) {
-		super();
-		this.id = id;
-		this.surname = surname;
-		this.name = name;
-		this.role = role;
-		this.email = email;
-		this.password = password;
-		this.imagePath = imagePath;
-	}
+    // Le nom de l'utilisateur
+    @Column(name = "name", length = 20, nullable = false)
+    private String name;
 
-	public Long getId() {
-		return id;
-	}
+    // Le rôle de l'utilisateur (ex: admin, utilisateur normal, etc.)
+    @Column(name = "role", length = 20, nullable = true)
+    private String role;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    // L'email de l'utilisateur, unique dans la base de données
+    @Column(name = "email", length = 30, nullable = false, unique = true)
+    private String email;
 
-	public String getSurname() {
-		return surname;
-	}
+    // Le mot de passe de l'utilisateur, stocké sous forme hachée
+    @Column(name = "password", length = 60, nullable = false)
+    private String password;
 
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
+    // Le chemin vers l'image de profil de l'utilisateur
+    @Column(name = "image_path", length = 255, nullable = true)
+    private String imagePath;
 
-	public String getName() {
-		return name;
-	}
+    // Constructeur sans paramètres
+    public User() {}
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    // Constructeur avec les informations de l'utilisateur
+    public User(String surname, String name, String role, String email, String password, String imagePath) {
+        this.surname = surname;
+        this.name = name;
+        this.role = role;
+        this.email = email;
+        this.password = password;
+        this.imagePath = imagePath;
+    }
 
-	public String getRole() {
-		return role;
-	}
+    // Constructeur avec tous les champs (y compris l'id)
+    public User(Long id, String surname, String name, String role, String email, String password, String imagePath) {
+        this.id = id;
+        this.surname = surname;
+        this.name = name;
+        this.role = role;
+        this.email = email;
+        this.password = password;
+        this.imagePath = imagePath;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    // Getters et setters pour chaque attribut
 
-	public String getEmail() {
-		return email;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getSurname() {
+        return surname;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
 
-	public String getImagePath() {
-		return imagePath;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("User [id=");
-		builder.append(id);
-		builder.append(", surname=");
-		builder.append(surname);
-		builder.append(", name=");
-		builder.append(name);
-		builder.append(", role=");
-		builder.append(role);
-		builder.append(", email=");
-		builder.append(email);
-		builder.append(", password=");
-		builder.append(password);
-		builder.append(", imagePath=");
-		builder.append(imagePath);
-		builder.append("]");
-		return builder.toString();
-	}
-	
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    /**
+     * Représentation textuelle de l'utilisateur pour les logs.
+     * @return une chaîne de caractères contenant toutes les informations de l'utilisateur.
+     */
+    @Override
+    public String toString() {
+        return "User{" +
+               "id=" + id +
+               ", surname='" + surname + '\'' +
+               ", name='" + name + '\'' +
+               ", role='" + role + '\'' +
+               ", email='" + email + '\'' +
+               ", password='" + password + '\'' +
+               ", imagePath='" + imagePath + '\'' +
+               '}';
+    }
 }

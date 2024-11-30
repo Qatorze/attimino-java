@@ -8,61 +8,88 @@ import com.qatorze.attimino.dtos.UserRequestDTO;
 import com.qatorze.attimino.models.User;
 import com.qatorze.attimino.utils.EmailMaskingUtil;
 
+/**
+ * Classe utilitaire pour convertir des entités User en DTO ou vice-versa.
+ * Utilisée pour transformer les données selon les besoins des différentes couches de l'application.
+ */
 @Component
 public class UserConverter {
-	
-	/* Cette méthode convertit un objet User en UserResponseDTO, destiné à l’affichage au front-end.*/
+
+    /**
+     * Convertit un objet `User` en `UserResponseDTO`.
+     * Ce DTO est destiné à être envoyé au frontend, masquant les données sensibles comme l'email.
+     * 
+     * @param user L'entité `User` à convertir.
+     * @return Un objet `UserResponseDTO` contenant les données nécessaires pour le frontend.
+     */
     public UserResponseDTO convertUserToUserResponseDTO(User user) {
-    	// maskingEmail permette di nascondere alcune lettere dell'email prima di rimandarla al front-end
-    	String maskedEmail = EmailMaskingUtil.maskEmail(user.getEmail());
-    	
-    	return new UserResponseDTO(
+        // Masque l'email avant de l'envoyer au frontend.
+        String maskedEmail = EmailMaskingUtil.maskEmail(user.getEmail());
+        
+        return new UserResponseDTO(
             user.getId(),
             user.getSurname(),
-            user.getName(), // Assicurati che qui ci sia il nome corretto
+            user.getName(),
             user.getRole(),
             maskedEmail,
             user.getImagePath()
-            
         );
     }
 
-    /* Convertit un objet LoginRequestDTO en User. Cet objet ne contient que l'email et le mot de passe, ce qui est suffisant pour une tentative de connexion.
-    Les autres champs de User comme le nom (name), le prénom (surname), le rôle (role) et l'image (imagePath) sont définis à null.*/
+    /**
+     * Convertit un objet `LoginRequestDTO` en une entité `User`.
+     * Utile pour les tentatives de connexion, où seules l'email et le mot de passe sont requis.
+     * 
+     * @param loginRequestDTO Le DTO contenant les informations de connexion.
+     * @return Une entité `User` avec les champs pertinents.
+     */
     public User convertLoginRequestDTO_ToUser(LoginRequestDTO loginRequestDTO) {
         return new User(
-            null, // surname
-            null, // name
-            null, // role
+            null, // Surname n'est pas nécessaire pour la connexion
+            null, // Name n'est pas nécessaire pour la connexion
+            null, // Role n'est pas nécessaire pour la connexion
             loginRequestDTO.getEmail(),
             loginRequestDTO.getPassword(),
-            null  // imagePath
+            null  // ImagePath n'est pas utilisé ici
         );
     }
 
-    /* Cette méthode convertit un RegisterRequestDTO en un objet User, principalement pour l'inscription d'un nouvel utilisateur.*/
+    /**
+     * Convertit un `RegisterRequestDTO` en une entité `User`.
+     * Utile lors de l'inscription d'un nouvel utilisateur, où certains champs comme le rôle 
+     * et le chemin de l'image sont définis par défaut ailleurs dans le processus.
+     * 
+     * @param registerRequestDTO Le DTO contenant les informations d'inscription.
+     * @return Une entité `User` avec les champs pertinents pour l'inscription.
+     */
     public User convertRegisterRequestDTO_ToUser(RegisterRequestDTO registerRequestDTO) {
         return new User(
             registerRequestDTO.getSurname(),
             registerRequestDTO.getName(),
-            null, // Le role ici est prédéfit dans la methode "register" du AuthService
+            null, // Le rôle sera défini dans la méthode de registre du service Auth
             registerRequestDTO.getEmail(),
             registerRequestDTO.getPassword(),
-            null  // imagePath
+            null  // Le chemin de l'image sera ajouté après l'inscription
         );
     }
-    
-    /* Cette méthode convertit un UserRequestDTO en un objet User, probablement pour mettre à jour les informations d’un utilisateur existant.*/
+
+    /**
+     * Convertit un `UserRequestDTO` en une entité `User`.
+     * Utile pour la mise à jour des informations d'un utilisateur existant.
+     * Certains champs, comme l'email ou le rôle, ne sont pas modifiables via cette méthode.
+     * 
+     * @param userRequestDTO Le DTO contenant les données de mise à jour.
+     * @return Une entité `User` mise à jour.
+     */
     public User convertUserRequestDTO_ToUser(UserRequestDTO userRequestDTO) {
         return new User(
-            userRequestDTO.getId(), // Settiamo l'ID
+            userRequestDTO.getId(), // Inclut l'ID pour identifier l'utilisateur à mettre à jour
             userRequestDTO.getSurname(),
             userRequestDTO.getName(),
-            null, // Le role au max est géré par l'admin
-            null, // l'email on ne veut pas donner la possibilité de la modifier / Pour le momment.
-            userRequestDTO.getPassword(), // La password può essere aggiornata
-            userRequestDTO.getImagePath() // Aggiorna le path de l'immage
+            null, // Le rôle n'est pas modifiable directement
+            null, // L'email reste inchangé pour des raisons de sécurité
+            userRequestDTO.getPassword(), // Permet de mettre à jour le mot de passe
+            userRequestDTO.getImagePath() // Met à jour le chemin de l'image si fourni
         );
     }
-    
 }

@@ -1,10 +1,16 @@
 package com.qatorze.attimino.exceptions;
 
+/**
+ * Exception levée lorsqu'une adresse email est déjà utilisée par un autre utilisateur.
+ */
 public class UserEmailAlreadyInUse extends RuntimeException {
-	
-	private static final long serialVersionUID = 1L;
+    
+    private static final long serialVersionUID = 1L; // Requis pour la sérialisation.
 
-	public UserEmailAlreadyInUse() {
-		super("Email already in use.");
-	}
+    /**
+     * Constructeur par défaut avec un message d'erreur prédéfini.
+     */
+    public UserEmailAlreadyInUse() {
+        super("Email already in use.");
+    }
 }
