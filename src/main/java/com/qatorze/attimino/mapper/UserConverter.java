@@ -1,12 +1,14 @@
 package com.qatorze.attimino.mapper;
 
-import org.springframework.stereotype.Component;
+import java.time.LocalDateTime;
+
+import org.springframework.stereotype.Component;	
 import com.qatorze.attimino.dtos.UserResponseDTO;
 import com.qatorze.attimino.dtos.LoginRequestDTO;
 import com.qatorze.attimino.dtos.RegisterRequestDTO;
 import com.qatorze.attimino.dtos.UserRequestDTO;
 import com.qatorze.attimino.models.User;
-import com.qatorze.attimino.utils.EmailMaskingUtil;
+import com.qatorze.attimino.utils.EmailMasking;
 
 /**
  * Classe utilitaire pour convertir des entités User en DTO ou vice-versa.
@@ -24,7 +26,7 @@ public class UserConverter {
      */
     public UserResponseDTO convertUserToUserResponseDTO(User user) {
         // Masque l'email avant de l'envoyer au frontend.
-        String maskedEmail = EmailMaskingUtil.maskEmail(user.getEmail());
+        String maskedEmail = EmailMasking.maskEmail(user.getEmail());
         
         return new UserResponseDTO(
             user.getId(),
@@ -50,7 +52,8 @@ public class UserConverter {
             null, // Role n'est pas nécessaire pour la connexion
             loginRequestDTO.getEmail(),
             loginRequestDTO.getPassword(),
-            null  // ImagePath n'est pas utilisé ici
+            null, // ImagePath n'est pas utilisé ici
+            null
         );
     }
 
@@ -69,7 +72,8 @@ public class UserConverter {
             null, // Le rôle sera défini dans la méthode de registre du service Auth
             registerRequestDTO.getEmail(),
             registerRequestDTO.getPassword(),
-            null  // Le chemin de l'image sera ajouté après l'inscription
+            null,  // Le chemin de l'image sera ajouté après l'inscription
+            LocalDateTime.now() // Impostiamo la data di registrazione al momento dell'iscrizione
         );
     }
 
@@ -89,7 +93,8 @@ public class UserConverter {
             null, // Le rôle n'est pas modifiable directement
             null, // L'email reste inchangé pour des raisons de sécurité
             userRequestDTO.getPassword(), // Permet de mettre à jour le mot de passe
-            userRequestDTO.getImagePath() // Met à jour le chemin de l'image si fourni
+            userRequestDTO.getImagePath(), // Met à jour le chemin de l'image si fourni
+            null
         );
     }
 }

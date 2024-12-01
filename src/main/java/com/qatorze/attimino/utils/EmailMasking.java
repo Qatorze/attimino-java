@@ -1,6 +1,6 @@
 package com.qatorze.attimino.utils;
 
-public class EmailMaskingUtil {
+public class EmailMasking {
 	
 	/**
      * Masque une adresse email en gardant visibles les 3 premiers caractères

@@ -17,7 +17,6 @@ import jakarta.servlet.http.HttpServletResponse;
 @Tag(name = "Auth", description = "Endpoint pour la gestion de l'authentification")
 @RestController // Annotation pour déclarer cette classe comme un contrôleur REST.
 @RequestMapping("/api/auth") // Préfixe pour les endpoints d'authentification.
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true") // Autorise les requêtes Cross-Origin du front-end (Angular, par ex.).
 public class AuthRestController {
 
     @Autowired

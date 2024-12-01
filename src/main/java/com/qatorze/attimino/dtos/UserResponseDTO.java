@@ -62,7 +62,7 @@ public class UserResponseDTO {
         return name;
     }
 
-    public void setNome(String name) { // Nom de méthode erroné : devrait être setName.
+    public void setName(String name) {
         this.name = name;
     }
 

@@ -1,5 +1,7 @@
 package com.qatorze.attimino.models;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 
 /**
@@ -40,21 +42,26 @@ public class User {
     @Column(name = "image_path", length = 255, nullable = true)
     private String imagePath;
 
+    // Date de création de l'utilisateur
+    @Column(name = "registration_date", nullable = false, updatable = false)
+    private LocalDateTime registrationDate;
+
     // Constructeur sans paramètres
     public User() {}
 
     // Constructeur avec les informations de l'utilisateur
-    public User(String surname, String name, String role, String email, String password, String imagePath) {
+    public User(String surname, String name, String role, String email, String password, String imagePath, LocalDateTime registrationDate) {
         this.surname = surname;
         this.name = name;
         this.role = role;
         this.email = email;
         this.password = password;
         this.imagePath = imagePath;
+        this.registrationDate = registrationDate;
     }
 
     // Constructeur avec tous les champs (y compris l'id)
-    public User(Long id, String surname, String name, String role, String email, String password, String imagePath) {
+    public User(Long id, String surname, String name, String role, String email, String password, String imagePath, LocalDateTime registrationDate) {
         this.id = id;
         this.surname = surname;
         this.name = name;
@@ -62,6 +69,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.imagePath = imagePath;
+        this.registrationDate = registrationDate;
     }
 
     // Getters et setters pour chaque attribut
@@ -122,6 +130,14 @@ public class User {
         this.imagePath = imagePath;
     }
 
+    public LocalDateTime getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(LocalDateTime registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
     /**
      * Représentation textuelle de l'utilisateur pour les logs.
      * @return une chaîne de caractères contenant toutes les informations de l'utilisateur.
@@ -136,6 +152,7 @@ public class User {
                ", email='" + email + '\'' +
                ", password='" + password + '\'' +
                ", imagePath='" + imagePath + '\'' +
+               ", registrationDate=" + registrationDate +
                '}';
     }
 }

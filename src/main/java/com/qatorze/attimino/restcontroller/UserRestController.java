@@ -17,7 +17,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Users", description = "Endpoint pour la gestion des utilisateurs")
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:4200") // Permet les requêtes CORS depuis le frontend Angular
 public class UserRestController {
 
     @Autowired
