@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.qatorze.attimino.dtos.RegisterRequestDTO;
 import com.qatorze.attimino.dtos.UserResponseDTO;
-import com.qatorze.attimino.exceptions.UserEmailAlreadyInUse;
+import com.qatorze.attimino.exceptions.UserEmailAlreadyInUseException;
 import com.qatorze.attimino.exceptions.InvalidCredentialsException;
 import com.qatorze.attimino.mapper.UserConverter;
 import com.qatorze.attimino.models.User;
@@ -66,7 +66,7 @@ public class AuthService {
 		// Vérifie si l'email est déjà utilisé.
 		Optional<User> optUser = userRepository.findByEmail(registerRequestDTO.getEmail());
         if (optUser.isPresent()) {
-            throw new UserEmailAlreadyInUse();
+            throw new UserEmailAlreadyInUseException();
         }  
         
         // Convertit le DTO en modèle User pour le stocker en base.

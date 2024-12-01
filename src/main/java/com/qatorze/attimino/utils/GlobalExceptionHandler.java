@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.qatorze.attimino.exceptions.InvalidCredentialsException;
 import com.qatorze.attimino.exceptions.UserByIdNotFoundException;
-import com.qatorze.attimino.exceptions.UserEmailAlreadyInUse;
+import com.qatorze.attimino.exceptions.UserEmailAlreadyInUseException;
 
 public class GlobalExceptionHandler {
 
@@ -42,8 +42,8 @@ public class GlobalExceptionHandler {
      * @param e L'exception levée.
      * @return Réponse avec le statut 401 et le message d'erreur.
      */
-    @ExceptionHandler(UserEmailAlreadyInUse.class)
-    public ResponseEntity<String> handleClienteEmailAlreadyInUse(UserEmailAlreadyInUse e) {
+    @ExceptionHandler(UserEmailAlreadyInUseException.class)
+    public ResponseEntity<String> handleClienteEmailAlreadyInUse(UserEmailAlreadyInUseException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
 }
